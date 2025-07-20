@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Language Translation</title>
+</head>
+<body>
+    <h1>Real-Time Language Translation</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="input_language">Input Language:</label>
+        <select id="input_language" name="input_language">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+        </select>
+        <br><br>
+        <label for="output_language">Output Language:</label>
+        <select id="output_language" name="output_language">
+            <option value="es">Spanish</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+        </select>
+        <br><br>
+        <label for="audio_file">Choose an audio file:</label>
+        <input type="file" id="audio_file" name="audio_file" accept="audio/*" required>
+        <br><br>
+        <input type="submit" value="Translate">
+    </form>
+    <br><br>
+    <audio id="audio" controls></audio>
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            var formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.blob())
+              .then(blob => {
+                  var audioElement = document.getElementById('audio');
+                  audioElement.src = URL.createObjectURL(blob);
+              });
+        });
+    </script>
+</body>
+</html>
